@@ -23,5 +23,6 @@ runs:
       run: npm install
 
     - name: Use cached node_modules
+      shell: bash
       if: steps.cache_dependencies.outputs.cache-hit == 'true'
       run: npm ci
