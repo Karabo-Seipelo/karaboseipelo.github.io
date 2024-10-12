@@ -52,6 +52,9 @@ jobs:
       - name: Build 🏗
         run: npm run build
 
+      - name: List files 📂
+        run: ls -la
+
       - name: Check if ./out directory exists
         run: |
           if [ ! -d "./out" ]; then
