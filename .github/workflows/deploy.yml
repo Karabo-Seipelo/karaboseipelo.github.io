@@ -31,6 +31,13 @@ jobs:
       - name: Build 🏗
         run: npm run build
 
+      - name: Check if ./out directory exists
+        run: |
+          if [ ! -d "./out" ]; then
+            echo "Directory ./out does not exist"
+            exit 1
+          fi
+
       - name: Upload 📤
         uses: actions/upload-pages-artifact@v3
         with:
