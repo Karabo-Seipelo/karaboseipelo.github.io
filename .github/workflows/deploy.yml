@@ -20,8 +20,29 @@ jobs:
       - name: Checkout 🛎️
         uses: actions/checkout@v4
 
-      - name: Configure 🔧
-        uses: ./.github/workflows/config
+      - name: Config Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Cache dependencies
+        id: cache_dependencies
+        uses: actions/cache@v3
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node_modules-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node_modules-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Install dependencies
+        shell: bash
+        if: steps.cache_dependencies.outputs.cache-hit != 'true'
+        run: npm install
+
+      - name: Use cached node_modules
+        shell: bash
+        if: steps.cache_dependencies.outputs.cache-hit == 'true'
+        run: npm ci
 
       - name: Pages 📄
         uses: actions/configure-pages@v4
